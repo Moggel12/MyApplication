@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -22,14 +20,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
+    private Toolbar toolbar;
     public static final String EXTRA_MESSAGE = "com.example.myapplication.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar = findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
         displayUsers();
     }
 
@@ -59,22 +61,9 @@ public class MainActivity extends AppCompatActivity {
         Future<String> future = exec.submit(new Callable<String>() {
             @Override
             public String call() {
-                URL postgrestEndpoint = null;
-                HttpURLConnection conn = null;
-                try {
-                    // Creation of URL
-                    postgrestEndpoint = new URL("http://caracal.imada.sdu.dk/app2019/users");
-                    // Creation of the connection
-                    conn = (HttpURLConnection) postgrestEndpoint.openConnection();
-                } catch (MalformedURLException e) {
-                    Log.d("MalformedURL", e.getMessage());
-                } catch (IOException e) {
-                    Log.d("IO Exception", e.getMessage());
-                }
+                // Using the self-made NetworkHTTP class to establish a connection object to the given endpoint
+                HttpURLConnection conn = NetworkHTTP.urlToHTTPConnection("http://caracal.imada.sdu.dk/app2019/users");
 
-                // Adding HTTP header properties
-                conn.setRequestProperty("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwMjAxOSJ9.3MGDqJYkivAsiMOXwvoPTD6_LTCWkP3RvI2zpzoB1XE");
-                conn.setRequestProperty("Content-Type", "application/json");
                 try {
                     if (conn.getResponseCode()==200) {
                         InputStream responseBody = null;
@@ -108,12 +97,11 @@ public class MainActivity extends AppCompatActivity {
                         responseBody.close();
                         return finalString;
                     } else {
-                        Log.d("HTTP response", "Bad response code");
+                        return "Bad HTTP response";
                     }
                 } catch (IOException e) {
                     Log.d("IOException", e.getMessage());
                 }
-                return "";
             }
         });
        TextView view = null;

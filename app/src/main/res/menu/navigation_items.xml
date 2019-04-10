@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/connection_group"
+        android:checkableBehavior="none"
+        >
+        <item
+            android:title="@string/sendMessDemo"
+            android:onClick="onCreate"
+            >
+        </item>
+        <item
+            android:title="@string/httpurlconn"
+            android:onClick=""
+            >
+        </item>
+        <item
+            android:title="@string/volley"
+            android:onClick=""
+            >
+        </item>
+    </group>
+</menu>

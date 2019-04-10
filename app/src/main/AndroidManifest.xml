@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myapplication">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DisplayMessageActivity" android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".HttpURLConnActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".VolleyActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".DisplayMessageActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
