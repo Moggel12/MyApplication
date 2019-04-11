@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TextView tv1 = findViewById(R.id.textView7);
-        tv1.setTextSize(15.0f);+
-        tv1.setText("DM564 test app \n");
-        tv1.append("1. Send message - virker næsten \n2. HttpURLConnection - virker \n3. Volley - udskift med Okhttp");
+        tv1.setTextSize(15.0f);
+        tv1.setText("DM564 test app" + "\n");
+        tv1.append("1. Send message - virker næsten (ish) \n2. HttpURLConnection - virker \n3. Volley - virker");
         toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
