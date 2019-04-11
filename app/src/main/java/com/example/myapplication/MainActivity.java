@@ -1,119 +1,86 @@
 package com.example.myapplication;
 
 import android.content.Intent;
-import android.net.http.HttpResponseCache;
 import android.os.Bundle;
-import android.util.JsonReader;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class MainActivity extends AppCompatActivity {
+    DrawerLayout dl;
     private Toolbar toolbar;
-    public static final String EXTRA_MESSAGE = "com.example.myapplication.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView tv1 = findViewById(R.id.textView7);
+        tv1.setTextSize(15.0f);+
+        tv1.setText("DM564 test app \n");
+        tv1.append("1. Send message - virker næsten \n2. HttpURLConnection - virker \n3. Volley - udskift med Okhttp");
+        toolbar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        dl = (DrawerLayout)findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.navigationView);
+
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
-        displayUsers();
-    }
-
-    /*
-     * Called when the user taps send
-     */
-    public void sendMessage(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = findViewById(R.id.editText);
-        String message = editText.toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    }
-
-    public void displayUsers() {
-        try {
-            // Install an HttpResponseCache for more responsiveness
-            HttpResponseCache httpCache = HttpResponseCache.install(getCacheDir(),100000L);
-        } catch (IOException e) {
-            Log.d("IO Exception", e.getMessage());
-        }
-
-        // Network operations must not be run in the UI (main) thread
-        final ExecutorService exec = Executors.newSingleThreadExecutor();
-
-        // Future that concenates a string of all usernames in the db (at the time of initialization)
-        Future<String> future = exec.submit(new Callable<String>() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public String call() {
-                // Using the self-made NetworkHTTP class to establish a connection object to the given endpoint
-                HttpURLConnection conn = NetworkHTTP.urlToHTTPConnection("http://caracal.imada.sdu.dk/app2019/users");
-
-                try {
-                    if (conn.getResponseCode()==200) {
-                        InputStream responseBody = null;
-                        InputStreamReader respBodyReader = null;
-
-                        // Initialize an InputStream, InputStreamReader and JsonReader for the connection
-                        responseBody = conn.getInputStream();
-                        respBodyReader = new InputStreamReader(responseBody, "UTF-8");
-                        JsonReader reader = new JsonReader(respBodyReader);
-
-                        String finalString = "Users:\n";
-
-                        // The JSON file from the http request is a JSON array with JSON objects inside
-                        reader.beginArray();
-                        while (reader.hasNext()) {
-                            reader.beginObject();
-                            while (reader.hasNext()) {
-                                if (reader.nextName().equals("id")) {
-                                    finalString = finalString + "\n" + reader.nextString();
-                                } else {
-                                    reader.skipValue();
-                                }
-                                Log.d("Inner-loop", "true");
-                            }
-                            reader.endObject();
-                            Log.d("Outer-loop", "True");
-                        }
-                        reader.endArray();
-                        reader.close();
-                        respBodyReader.close();
-                        responseBody.close();
-                        return finalString;
-                    } else {
-                        return "Bad HTTP response";
-                    }
-                } catch (IOException e) {
-                    Log.d("IOException", e.getMessage());
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch(id) {
+                    case R.id.Send_Messages_Item:
+                        Toast.makeText(MainActivity.this, "Opening messages", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivity.this, DisplayMessageActivity.class));
+                        dl.closeDrawers();
+                        return true;
+                    case R.id.HttpURL_Item:
+                        Toast.makeText(MainActivity.this, "Opening HttpURLConnection networking", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivity.this, HttpURLConnActivity.class));
+                        dl.closeDrawers();
+                        return true;
+                    case R.id.volley_item:
+                        Toast.makeText(MainActivity.this, "Opening Volley networking", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivity.this, VolleyActivity.class));
+                        dl.closeDrawers();
+                        return true;
+                    default:
+                        return true;
                 }
             }
         });
-       TextView view = null;
-       try {
-           view = findViewById(R.id.textView2);
-           view.setText(future.get(), TextView.BufferType.NORMAL);
-       } catch (ExecutionException e) {
-           Log.d("Execution Exception", e.getMessage());
-       } catch (InterruptedException e) {
-           Log.d("Interrupted exception", e.getMessage());
-       }
+
+//        displayUsers();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                dl.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
 }
 
 

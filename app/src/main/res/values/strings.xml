@@ -5,4 +5,6 @@
     <string name="volley">Volley</string>
     <string name="httpurlconn">HttpURLconn</string>
     <string name="sendMessDemo">Send Messages Demo</string>
+    <string name="closeDrawer">CloseDrawer</string>
+    <string name="openDrawer">OpenDrawer</string>
 </resources>
