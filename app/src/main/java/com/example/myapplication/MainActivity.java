@@ -55,11 +55,19 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(MainActivity.this, HttpURLConnActivity.class));
                         dl.closeDrawers();
                         return true;
-                    case R.id.volley_item:
+                    case R.id.volley_subitem_GET:
                         Toast.makeText(MainActivity.this, "Opening Volley networking", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(MainActivity.this, VolleyActivity.class));
+                        Intent intent = new Intent(MainActivity.this, VolleyActivity.class);
+                        intent.putExtra("Volley_GET", true);
+                        startActivity(intent);
                         dl.closeDrawers();
                         return true;
+                    case R.id.volley_subitem_POST:
+                        Toast.makeText(MainActivity.this, "Opening Volley networking", Toast.LENGTH_SHORT).show();
+                        Intent intent2 = new Intent(MainActivity.this, VolleyActivity.class);
+                        intent2.putExtra("Volley_GET", false);
+                        startActivity(intent2);
+                        dl.closeDrawers();
                     default:
                         return true;
                 }
@@ -68,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
 
 //        displayUsers();
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

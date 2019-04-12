@@ -7,4 +7,9 @@
     <string name="sendMessDemo">Send Messages Demo</string>
     <string name="closeDrawer">CloseDrawer</string>
     <string name="openDrawer">OpenDrawer</string>
+    <string name="UserID">User ID:</string>
+    <string name="Uname">Name:</string>
+    <string name="inputUID">Your user ID</string>
+    <string name="inputUname">Your name</string>
+    <string name="subUser">Submit User</string>
 </resources>

@@ -7,18 +7,26 @@
         >
         <item
             android:id="@+id/Send_Messages_Item"
-            android:title="@string/sendMessDemo"
-            >
-        </item>
+            android:title="@string/sendMessDemo" />
         <item
             android:id="@+id/HttpURL_Item"
-            android:title="@string/httpurlconn"
-            >
-        </item>
+            android:title="@string/httpurlconn" />
         <item
             android:id="@+id/volley_item"
-            android:title="@string/volley"
-            >
+            android:title="@string/volley">
+
+            <menu>
+
+                <item
+                    android:id="@+id/volley_subitem_GET"
+                    android:title="Volley GET"/>
+                <item
+                    android:id="@+id/volley_subitem_POST"
+                    android:title="Volley POST"/>
+
+
+            </menu>
+
         </item>
     </group>
 </menu>
